@@ -13,36 +13,36 @@ import org.apache.commons.codec.binary.Hex;
  */
 
 public class IDCreator {
-    Context context = null;
+    private Context context = null;
 
     public IDCreator(Context context){
         this.context = context;
     }
 
-    public String getMacAddress(){
+    private String getMacAddress(){
         WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         return manager.getConnectionInfo().getMacAddress();
     }
 
-    public String getBluetoothHWaddr(){
+    private String getBluetoothHWaddr(){
         return android.provider.Settings.Secure.getString(context.getContentResolver(), "bluetooth_address");
     }
 
-    public String getIMEI(){
+    private String getIMEI(){
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getDeviceId();
     }
 
-    public String getSimSerial(){
+    private String getSimSerial(){
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getSimSerialNumber();
     }
 
-    public String getAndroidVersion(){
+    private String getAndroidVersion(){
         return Build.VERSION.RELEASE;
     }
 
-    public String getAndroidID(){
+    private String getAndroidID(){
         return android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
     }
 
