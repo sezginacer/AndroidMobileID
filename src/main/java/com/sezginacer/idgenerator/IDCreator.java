@@ -13,36 +13,40 @@ import org.apache.commons.codec.binary.Hex;
  */
 
 public class IDCreator {
-    private Context context = null;
+    private Context context = null;  // activity
 
     public IDCreator(Context context){
-        this.context = context;
+        this.context = context;  // activity given as parameter to the constructor
     }
 
-    private String getMacAddress(){
+    public String getMacAddress(){
+        /*
+        This function always returns constant 02.00.00.00.00.00 if Android Release >= 6.0
+        Because from that version on, Android gives no access to WiFi Mac Address
+         */
         WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         return manager.getConnectionInfo().getMacAddress();
     }
 
-    private String getBluetoothHWaddr(){
+    public String getBluetoothHWaddr(){
         return android.provider.Settings.Secure.getString(context.getContentResolver(), "bluetooth_address");
     }
 
-    private String getIMEI(){
+    public String getIMEI(){
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getDeviceId();
     }
 
-    private String getSimSerial(){
+    public String getSimSerial(){
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return manager.getSimSerialNumber();
     }
 
-    private String getAndroidVersion(){
+    public String getAndroidVersion(){
         return Build.VERSION.RELEASE;
     }
 
-    private String getAndroidID(){
+    public String getAndroidID(){
         return android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
     }
 
@@ -53,6 +57,6 @@ public class IDCreator {
         ret += getIMEI();
         ret += getBluetoothHWaddr();
         ret += getMacAddress();
-        return Hex.encodeHex(DigestUtils.sha1Hex(ret));
+        return new String(Hex.encodeHex(DigestUtils.md5(ret)));
     }
 }
